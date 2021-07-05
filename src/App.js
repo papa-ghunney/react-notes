@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import NotesList from "./components/NotesList";
+import React, { useState } from 'react';
+import Search from "./components/Search";
+import Header from "./components/Header";
+import { useGlobalContext } from './context/NotesContext'
 
 function App() {
+  const [searchText, setSearchText] = useState("")
+
+  const [darkMode, setDarkMode] = useState(false)
+  const { notes } = useGlobalContext();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={`${darkMode && 'dark-mode'}`}>
+      <div className="container">
+        <Header handleToggleDarkMode={setDarkMode} />
+        <Search handleSearchNote={setSearchText} />
+        <NotesList notes={notes.filter((note) => note.text.includes(searchText))} />
+      </div>
     </div>
   );
 }
+
+
 
 export default App;
